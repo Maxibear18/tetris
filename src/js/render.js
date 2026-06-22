@@ -19,6 +19,20 @@ export function drawGrid(ctx) {
   }
 }
 
+// Draw one piece. (col, row) is the top-left corner of the shape grid
+// mapped onto the board — same coordinate system as the grid loops above.
+export function drawPiece(ctx, piece, col, row) {
+  piece.shape.forEach((shapeRow, r) => {
+    shapeRow.forEach((filled, c) => {
+      if (!filled) return;
+      const x = (col + c) * CELL;
+      const y = (row + r) * CELL;
+      ctx.fillStyle = piece.color;
+      ctx.fillRect(x, y, CELL - 1, CELL - 1);
+    });
+  });
+}
+
 export function render(canvas) {
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
