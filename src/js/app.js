@@ -57,6 +57,17 @@ export function softDrop(state) {
   lockCurrentAndSpawn(state);
 }
 
+export function hardDrop(state) {
+  const { piece, col } = state.current;
+
+  while (canPlace(state.board, piece, col, state.current.row + 1)) {
+    state.current.row++;
+  }
+
+  state.dropCounter = 0;
+  lockCurrentAndSpawn(state);
+}
+
 function rotateShape(shape) {
   const rows = shape.length;
   const cols = shape[0].length;

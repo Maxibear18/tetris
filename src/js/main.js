@@ -1,4 +1,4 @@
-import { createState, update, moveLeft, moveRight, softDrop, rotate } from './app.js';
+import { createState, update, moveLeft, moveRight, softDrop, hardDrop, rotate } from './app.js';
 import { render } from './render.js';
 
 const canvas = document.getElementById('game');
@@ -31,6 +31,10 @@ window.addEventListener('keydown', (event) => {
     case 'ArrowDown':
       event.preventDefault();
       softDrop(state);
+      break;
+    case 'ArrowUp':
+      event.preventDefault();
+      hardDrop(state);
       break;
     case 'Space':
       event.preventDefault();
