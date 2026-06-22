@@ -50,5 +50,18 @@ export const PIECES = {
     ],
     color: '#ef4444',
   },
-  
+  J: {
+    shape: [
+      [1,0,0],
+      [1,1,1],
+    ],
+    color: '#8b5cf6',
+  },
+  L: {
+    shape: [
+      [1,1,1],
+      [1,0,0],
+    ],
+    color: '#8b5cf6',
+  },
 };
