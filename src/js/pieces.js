@@ -59,9 +59,16 @@ export const PIECES = {
   },
   L: {
     shape: [
-      [1,1,1],
-      [1,0,0],
+      [1, 1, 1],
+      [0, 0, 1],
     ],
-    color: '#8b5cf6',
+    color: '#f97316',
   },
 };
+
+const PIECE_NAMES = Object.keys(PIECES);
+
+export function randomPiece() {
+  const name = PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
+  return PIECES[name];
+}

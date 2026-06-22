@@ -33,10 +33,26 @@ export function drawPiece(ctx, piece, col, row) {
   });
 }
 
-export function render(canvas) {
+function drawBoard(ctx, board) {
+  board.forEach((row, r) => {
+    row.forEach((color, c) => {
+      if (!color) return;
+      ctx.fillStyle = color;
+      ctx.fillRect(c * CELL, r * CELL, CELL - 1, CELL - 1);
+    });
+  });
+}
+
+export function render(canvas, state) {
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = COLORS.background;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   drawGrid(ctx);
+  drawBoard(ctx, state.board);
+
+  if (state.current) {
+    const { piece, col, row } = state.current;
+    drawPiece(ctx, piece, col, row);
+  }
 }

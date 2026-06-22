@@ -1,8 +1,19 @@
-import { render, drawPiece } from './render.js';
-import { PIECES } from './pieces.js';
+import { createState, update } from './app.js';
+import { render } from './render.js';
 
 const canvas = document.getElementById('game');
-render(canvas);
+let state = createState();
+let lastTime = 0;
 
-const ctx = canvas.getContext('2d');
-drawPiece(ctx, PIECES.T, 3, 0);
+function gameLoop(time) {
+  if (!lastTime) lastTime = time;
+  const deltaMs = time - lastTime;
+  lastTime = time;
+
+  update(state, deltaMs);
+  render(canvas, state);
+
+  requestAnimationFrame(gameLoop);
+}
+
+requestAnimationFrame(gameLoop);
