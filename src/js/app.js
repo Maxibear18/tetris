@@ -33,6 +33,51 @@ export function canPlace(board, piece, col, row) {
   return true;
 }
 
+export function moveLeft(state) {
+  const { piece, col, row } = state.current;
+  if (canPlace(state.board, piece, col - 1, row)) {
+    state.current.col--;
+  }
+}
+
+export function moveRight(state) {
+  const { piece, col, row } = state.current;
+  if (canPlace(state.board, piece, col + 1, row)) {
+    state.current.col++;
+  }
+}
+
+export function softDrop(state) {
+  const { piece, col, row } = state.current;
+  if (canPlace(state.board, piece, col, row + 1)) {
+    state.current.row++;
+    state.dropCounter = 0;
+    return;
+  }
+  lockCurrentAndSpawn(state);
+}
+
+function rotateShape(shape) {
+  const rows = shape.length;
+  const cols = shape[0].length;
+  const rotated = Array.from({ length: cols }, () => Array(rows).fill(0));
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      rotated[c][rows - 1 - r] = shape[r][c];
+    }
+  }
+  return rotated;
+}
+
+export function rotate(state) {
+  const { piece, col, row } = state.current;
+  const rotated = { ...piece, shape: rotateShape(piece.shape) };
+  if (canPlace(state.board, rotated, col, row)) {
+    state.current.piece = rotated;
+  }
+}
+
 function lockPiece(board, piece, col, row) {
   piece.shape.forEach((shapeRow, r) => {
     shapeRow.forEach((filled, c) => {
@@ -44,6 +89,17 @@ function lockPiece(board, piece, col, row) {
       }
     });
   });
+}
+
+function lockCurrentAndSpawn(state) {
+  const { piece, col, row } = state.current;
+  lockPiece(state.board, piece, col, row);
+  state.current = spawnPiece();
+
+  if (!canPlace(state.board, state.current.piece, state.current.col, state.current.row)) {
+    state.gameOver = true;
+    state.current = null;
+  }
 }
 
 export function createState() {
@@ -72,11 +128,5 @@ export function update(state, deltaMs) {
     return;
   }
 
-  lockPiece(state.board, piece, col, row);
-  state.current = spawnPiece();
-
-  if (!canPlace(state.board, state.current.piece, state.current.col, state.current.row)) {
-    state.gameOver = true;
-    state.current = null;
-  }
+  lockCurrentAndSpawn(state);
 }
