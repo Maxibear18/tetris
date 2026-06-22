@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tetris</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="game-container">
+    <canvas id="game" width="300" height="600"></canvas>
+    <div class="sidebar">
+      <p>Score: <span id="score">0</span></p>
+      <p>Lines: <span id="lines">0</span></p>
+      <canvas id="next" width="120" height="120"></canvas>
+      <p class="controls">
+        ← → move &nbsp; ↑ rotate &nbsp; ↓ soft drop &nbsp; Space hard drop
+      </p>
+    </div>
+  </div>
+  <!-- Load modules in dependency order -->
+  <script type="module" src="../js/main.js"></script>
+</body>
+</html>
