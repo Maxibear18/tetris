@@ -102,9 +102,26 @@ function lockPiece(board, piece, col, row) {
   });
 }
 
+function isRowFull(row) {
+  return row.every((cell) => cell !== null);
+}
+
+function clearLines(state) {
+  const before = state.board.length;
+  state.board = state.board.filter((row) => !isRowFull(row));
+  const cleared = before - state.board.length;
+
+  while (state.board.length < ROWS) {
+    state.board.unshift(Array(COLS).fill(null));
+  }
+
+  return cleared;
+}
+
 function lockCurrentAndSpawn(state) {
   const { piece, col, row } = state.current;
   lockPiece(state.board, piece, col, row);
+  clearLines(state);
   state.current = spawnPiece();
 
   if (!canPlace(state.board, state.current.piece, state.current.col, state.current.row)) {
